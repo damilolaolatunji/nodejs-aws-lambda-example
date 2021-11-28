@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'aws-lambda-nodejs-example
+
+  Sample SAM Template for aws-lambda-nodejs-example
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  HelloWorldFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: HelloWorldFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+  QuotesScraperFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: QuotesScraperFunction
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        QuotesScraper:
+          Type: Api
+          Properties:
+            Path: /quotes
+            Method: get
+Outputs:
+  HelloWorldApi:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloWorldFunction:
+    Description: Hello World Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunction
+      - Arn
+  HelloWorldFunctionIamRole:
+    Description: Implicit IAM Role created for Hello World function
+    Value:
+      Fn::GetAtt:
+      - HelloWorldFunctionRole
+      - Arn
+  QuotesScraperApi:
+    Description: API Gateway endpoint URL for Prod stage for Quotes Scraper function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/quotes/
+  QuotesScraperFunction:
+    Description: Quotes Scraper Function ARN
+    Value:
+      Fn::GetAtt:
+      - QuotesScraperFunction
+      - Arn
+  QuotesScraperFunctionIamRole:
+    Description: Implicit IAM Role created for Quotes Scraper function
+    Value:
+      Fn::GetAtt:
+      - QuotesScraperFunctionRole
+      - Arn
